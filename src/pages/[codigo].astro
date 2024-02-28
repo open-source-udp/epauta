@@ -1,0 +1,105 @@
+---
+import { supabase } from "../lib/db";
+
+import Layout from "../layouts/Layout.astro";
+import "@/styles/globals.css";
+import eii from "../data/eii/ramos.json";
+import eit from "../data/eit/ramos.json";
+import eoc from "../data/eoc/ramos.json";
+import planComun from "../data/plan-comun/ramos.json";
+
+import MaterialCard from "../components/MaterialCard";
+
+export async function getStaticPaths() {
+    const ramos = [...eii, ...eit, ...eoc, ...planComun];
+
+    return ramos.map(({ codigo, nombre }) => {
+        return {
+            params: { codigo },
+            props: { nombre, codigo },
+        };
+    });
+}
+
+const { nombre, codigo } = Astro.props;
+
+const { data, error } = await supabase.storage.from("recursos").list(codigo, {
+    limit: 100,
+    offset: 0,
+    sortBy: { column: "name", order: "asc" },
+});
+
+const recursos = await Promise.all(
+    data!.map(async (recurso) => {
+        const { data: publicUrlData } = await supabase.storage
+            .from("recursos")
+            .getPublicUrl(`${codigo}/${recurso.name}`, {
+                download: true,
+            });
+
+        if (error) {
+            console.error("Error fetching public URL:", error.message);
+            return { ...recurso, publicUrl: null };
+        }
+
+        return { ...recurso, publicUrl: publicUrlData.publicUrl };
+    }),
+);
+---
+
+
+
+<Layout title="ePauta">
+    <header>
+        <h1 class="ramo">
+            <a href="/">ePAUTA</a> | <span class="codigo">{codigo}</span>
+            {nombre}
+        </h1>
+    </header>
+    <div class="recursos">
+        {
+            recursos &&
+                recursos.map((recurso: any) => (
+                    <MaterialCard
+                        nombre={recurso.name}
+                        codigo={codigo}
+                        publicUrl={recurso.publicUrl}
+                    />
+                ))
+        }
+    </div>
+</Layout>
+
+
+
+<style>
+    .card {
+        background-color: #f3f3f3;
+        padding: 1rem;
+        border-radius: 0.5rem;
+    }
+    .recursos {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1rem;
+    }
+    .codigo {
+        font-size: 1.5rem;
+        background-color: #fff;
+        padding: 1px 11px;
+        color: #ef4444;
+    }
+    .my-config {
+        --darkmode: 0;
+        --h-accent: 0;
+        --s-accent: 100%;
+        --l-accent: 63%;
+    }
+    header {
+        display: flex;
+        align-items: center;
+    }
+    #back > span {
+        font-size: 30px;
+    }
+</style>
