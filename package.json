@@ -28,10 +28,10 @@
     "react-dom": "^18.2.0",
     "tailwind-merge": "^2.2.1",
     "tailwindcss": "^3.4.1",
-    "tailwindcss-animate": "^1.0.7",
-    "typescript": "^5.3.3"
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
-    "@types/node": "^20.11.17"
+    "@types/node": "^20.11.17",
+    "typescript": "^5.3.3"
   }
 }
