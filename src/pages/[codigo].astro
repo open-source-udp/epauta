@@ -15,13 +15,12 @@ export async function getStaticPaths() {
 
     return ramos.map(({ codigo, nombre }) => {
         return {
-            params: { codigo },
-            props: { nombre, codigo },
+            params: { codigo, nombre },
         };
     });
 }
 
-const { nombre, codigo } = Astro.props;
+const { codigo, nombre } = Astro.params;
 
 const { data, error } = await supabase.storage.from("recursos").list(codigo, {
     limit: 100,
