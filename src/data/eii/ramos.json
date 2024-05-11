@@ -74,5 +74,13 @@
     {
       "codigo": "CBE-2000",
       "nombre": "Probabilidad y estadística"
+    },
+    {
+      "codigo": "CII-2104",
+      "nombre": "Evaluación de proyectos"
+    },
+    {
+      "codigo": "CII-3101",
+      "nombre": "Liderazgo y emprendimiento"
     }
   ]
