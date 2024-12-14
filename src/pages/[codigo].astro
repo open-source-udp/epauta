@@ -23,7 +23,7 @@ export async function getStaticPaths() {
 }
 
 const { codigo, nombre } = Astro.params;
-const searchParam = Astro.url.searchParams.get('search') || ''; // Si no existe, cadena vacía
+const searchParam = Astro.url.searchParams.get('search') || '';
 
 // Obtener lista de recursos desde Supabase
 const { data, error } = await supabase.storage.from("recursos").list(codigo, {
@@ -50,7 +50,6 @@ const recursosBase = await Promise.all(
     }) ?? []
 );
 
-// Filtrar por 'searchParam' si éste no está vacío
 const recursos = recursosBase.filter((recurso: any) => {
     return recurso.name.toLowerCase().includes(searchParam.toLowerCase());
 });
@@ -63,27 +62,15 @@ const recursos = recursosBase.filter((recurso: any) => {
             {nombre}
         </h1>
         
-        <!-- Formulario de búsqueda -->
-        <form action="" method="get" style="margin-top: 1rem; display:flex; gap:0.5rem;">
+        <form action="" method="get">
           <input 
             type="text" 
             name="search" 
             placeholder="Buscar..." 
             value={searchParam} 
-            style="
-              padding:0.5rem; 
-              border:1px solid #ccc; 
-              border-radius:0.25rem; 
-              flex:1;"
+            class="input-search"
           />
-          <button type="submit" 
-            style="
-              background-color:#fff; 
-              color: #ef4444; 
-              padding:0.5rem 1rem; 
-              border:none; 
-              border-radius:0.25rem; 
-              cursor:pointer;">
+          <button type="submit" class="button-search">
             <MagnifyingGlassIcon />
           </button>
         </form>
@@ -110,6 +97,39 @@ const recursos = recursosBase.filter((recurso: any) => {
         justify-content: space-between;
         align-items: center;
         gap: 1rem;
+    }
+
+    @media screen and (max-width: 768px) {
+        header {
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        form {
+            width: 100%;
+        }
+        
+    }
+
+    form {
+        margin-top: 1rem; 
+        display:flex; 
+        gap:0.5rem;
+    }
+
+    .input-search {
+        padding:0.5rem; 
+        border:1px solid #ccc; 
+        border-radius:0.25rem; 
+        flex:1;
+    }
+    .button-search {
+        background-color:#fff; 
+        color: #ef4444; 
+        padding:0.5rem 1rem; 
+        border:none; 
+        border-radius:0.25rem; 
+        cursor:pointer;
     }
     .card {
         background-color: #f3f3f3;
