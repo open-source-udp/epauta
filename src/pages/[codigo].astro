@@ -8,6 +8,8 @@ import eit from "../data/eit/ramos.json";
 import eoc from "../data/eoc/ramos.json";
 import planComun from "../data/plan-comun/ramos.json";
 
+import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
+
 import MaterialCard from "@/components/MaterialCard.astro";
 
 export async function getStaticPaths() {
@@ -21,15 +23,18 @@ export async function getStaticPaths() {
 }
 
 const { codigo, nombre } = Astro.params;
+const searchParam = Astro.url.searchParams.get('search') || ''; // Si no existe, cadena vacía
 
+// Obtener lista de recursos desde Supabase
 const { data, error } = await supabase.storage.from("recursos").list(codigo, {
     limit: 100,
     offset: 0,
     sortBy: { column: "name", order: "asc" },
 });
 
-const recursos = await Promise.all(
-    data!.map(async (recurso) => {
+// Obtener URLs públicas
+const recursosBase = await Promise.all(
+    data?.map(async (recurso) => {
         const { data: publicUrlData } = await supabase.storage
             .from("recursos")
             .getPublicUrl(`${codigo}/${recurso.name}`, {
@@ -41,39 +46,71 @@ const recursos = await Promise.all(
             return { ...recurso, publicUrl: null };
         }
 
-        return { ...recurso, publicUrl: publicUrlData.publicUrl };
-    }),
+        return { ...recurso, publicUrl: publicUrlData?.publicUrl };
+    }) ?? []
 );
+
+// Filtrar por 'searchParam' si éste no está vacío
+const recursos = recursosBase.filter((recurso: any) => {
+    return recurso.name.toLowerCase().includes(searchParam.toLowerCase());
+});
 ---
 
-
-
 <Layout title="ePauta">
-    <header>
+    <header class="header">
         <h1 class="ramo">
             <a href="/">ePAUTA</a> | <span class="codigo">{codigo}</span>
             {nombre}
         </h1>
+        
+        <!-- Formulario de búsqueda -->
+        <form action="" method="get" style="margin-top: 1rem; display:flex; gap:0.5rem;">
+          <input 
+            type="text" 
+            name="search" 
+            placeholder="Buscar..." 
+            value={searchParam} 
+            style="
+              padding:0.5rem; 
+              border:1px solid #ccc; 
+              border-radius:0.25rem; 
+              flex:1;"
+          />
+          <button type="submit" 
+            style="
+              background-color:#fff; 
+              color: #ef4444; 
+              padding:0.5rem 1rem; 
+              border:none; 
+              border-radius:0.25rem; 
+              cursor:pointer;">
+            <MagnifyingGlassIcon />
+          </button>
+        </form>
     </header>
     <div class="recursos">
         {
             recursos &&
                 recursos.map((recurso: any) => (
                     <MaterialCard
-                    material={{
-                        nombre: recurso.name,
-                        codigo: codigo,
-                        publicUrl: recurso.publicUrl
-                    }}
+                      material={{
+                          nombre: recurso.name,
+                          codigo: codigo,
+                          publicUrl: recurso.publicUrl
+                      }}
                     />
                 ))
         }
     </div>
 </Layout>
 
-
-
 <style>
+    header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+    }
     .card {
         background-color: #f3f3f3;
         padding: 1rem;
@@ -96,10 +133,6 @@ const recursos = await Promise.all(
         --h-accent: 0;
         --s-accent: 100%;
         --l-accent: 63%;
-    }
-    header {
-        display: flex;
-        align-items: center;
     }
     #back > span {
         font-size: 30px;
