@@ -42,7 +42,7 @@ const recursosBase = await Promise.all(
             });
 
         if (error) {
-            console.error("Error fetching public URL:", error.message);
+            console.error("Error fetching public URL:", error);
             return { ...recurso, publicUrl: null };
         }
 
