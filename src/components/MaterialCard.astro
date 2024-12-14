@@ -1,0 +1,29 @@
+---
+import {
+    Card,
+    CardHeader
+  } from './ui/card'
+  
+  import './MaterialCard.css'
+  
+  interface Material {
+    nombre: string
+    codigo: string
+    publicUrl: string
+  }
+
+    interface Props {
+        material: Material
+    }
+
+const { material } = Astro.props
+---
+            <a href={material.publicUrl} ><Card style={{
+            backgroundColor: '#f3f3f3',
+            borderRadius: '0.5rem'
+          }}>
+              <CardHeader className='nombre' style={{
+                fontSize: '15px',
+                textTransform: 'uppercase'
+              }}>{material.nombre}</CardHeader>
+          </Card></a>

@@ -8,7 +8,7 @@ import eit from "../data/eit/ramos.json";
 import eoc from "../data/eoc/ramos.json";
 import planComun from "../data/plan-comun/ramos.json";
 
-import MaterialCard from "../components/MaterialCard";
+import MaterialCard from "@/components/MaterialCard.astro";
 
 export async function getStaticPaths() {
     const ramos = [...eii, ...eit, ...eoc, ...planComun];
@@ -60,9 +60,11 @@ const recursos = await Promise.all(
             recursos &&
                 recursos.map((recurso: any) => (
                     <MaterialCard
-                        nombre={recurso.name}
-                        codigo={codigo}
-                        publicUrl={recurso.publicUrl}
+                    material={{
+                        nombre: recurso.name,
+                        codigo: codigo,
+                        publicUrl: recurso.publicUrl
+                    }}
                     />
                 ))
         }
