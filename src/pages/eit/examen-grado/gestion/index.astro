@@ -1,26 +1,28 @@
 ---
-import Layout from "../../layouts/Layout.astro";
+import Layout from "@/layouts/Layout.astro";
 import "@/styles/globals.css";
-import Ramo from "../../components/Ramo.astro";
-import ramos from "../../data/eit/ramos.json";
+import Ramo from "@/components/RamoGrado.astro";
+import ramos from "@/data/eit/grado/material.json";
+
+const telecomunicaciones = ramos[0]
+const { material: materialTelecomunicaciones } = telecomunicaciones;
 ---
 
-<Layout title="Informática y Telecomunicaciones - ePAUTA">
+
+<Layout title="Examen de Grado - Telecomunicaciones">
     <header>
         <h1 class="ramo">
-            <a href="/">ePAUTA</a> | Informática y Telecomunicaciones
+            <a href="/">ePAUTA</a> | <a href="/eit/examen-grado">Examen de Grado</a>  | Telecomunicaciones
         </h1>
     </header>
-    <section class="grado">
-        <a href="/eit/examen-grado">Material para examen de grado</a>
-    </section>
     <div class="grid">
         {
-            ramos.map((ramo: { codigo: string; nombre: string }) => (
+            materialTelecomunicaciones.map((ramo: { codigo: string; nombre: string }) => (
                 <Ramo
                     codigo={ramo.codigo}
                     nombre={ramo.nombre}
-                    href={`/${ramo.codigo}`}
+                    especialidad="TEL"
+                    href={`/eit/examen-grado/telecomunicaciones/${ramo.codigo}`}
                 />
             ))
         }
