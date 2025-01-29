@@ -65,7 +65,7 @@
     },
     {
         "codigo": "GES",
-        "nombre": "gestión",
+        "nombre": "gestion",
         "material":[
             {
                 "codigo": "EXTRA-GES",
