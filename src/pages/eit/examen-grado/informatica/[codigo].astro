@@ -4,8 +4,6 @@ import Layout from "@/layouts/Layout.astro";
 import "@/styles/globals.css";
 import ramos from "@/data/eit/grado/material.json";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
-
-import ResourcesWithViewer from "@/components/ResourcesWithViewer.jsx";
 import MaterialCard from "@/components/MCard"
 
 export async function getStaticPaths() {
@@ -22,7 +20,7 @@ export async function getStaticPaths() {
 const { codigo, nombre } = Astro.params;
 const searchParam = Astro.url.searchParams.get('search') || '';
 
-const { data, error } = await supabase.storage.from("recursos").list("GRADE/TEL/"+codigo, {
+const { data, error } = await supabase.storage.from("recursos").list("GRADE/INF/"+codigo, {
     limit: 100,
     offset: 0,
     sortBy: { column: "name", order: "asc" },
@@ -32,7 +30,7 @@ const recursosBase = await Promise.all(
     data?.map(async (recurso) => {
         const { data: publicUrlData } = await supabase.storage
             .from("recursos")
-            .getPublicUrl("GRADE/TEL/"+`${codigo}/${recurso.name}`)
+            .getPublicUrl("GRADE/INF/"+`${codigo}/${recurso.name}`)
         if (error) {
             console.error("Error fetching public URL:", error);
             return { ...recurso, publicUrl: null };
@@ -49,7 +47,7 @@ const recursos = recursosBase.filter((recurso) => {
 <Layout title="ePauta">
     <header class="header">
         <h1 class="ramo">
-            <a href="/">ePAUTA</a> | <a href="/eit/examen-grado">Examen de Grado</a> | <a href="/eit/examen-grado/telecomunicaciones/">Telecomunicaciones</a> <span class="codigo">{codigo}</span>
+            <a href="/">ePAUTA</a> | <a href="/eit/examen-grado">Examen de Grado</a> | <a href="/eit/examen-grado/informatica/">Informática</a> <span class="codigo">{codigo}</span>
         </h1>
         
         <form action="" method="get">
