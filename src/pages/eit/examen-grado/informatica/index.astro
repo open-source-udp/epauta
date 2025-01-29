@@ -4,25 +4,25 @@ import "@/styles/globals.css";
 import Ramo from "@/components/RamoGrado.astro";
 import ramos from "@/data/eit/grado/material.json";
 
-const telecomunicaciones = ramos[0]
-const { material: materialTelecomunicaciones } = telecomunicaciones;
+const informatica = ramos[1]
+const { material: materialInformatica } = informatica;
 ---
 
 
 <Layout title="Examen de Grado - Telecomunicaciones">
     <header>
         <h1 class="ramo">
-            <a href="/">ePAUTA</a> | <a href="/eit/examen-grado">Examen de Grado</a>  | Telecomunicaciones
+            <a href="/">ePAUTA</a> | <a href="/eit/examen-grado">Examen de Grado</a>  | Informática
         </h1>
     </header>
     <div class="grid">
         {
-            materialTelecomunicaciones.map((ramo: { codigo: string; nombre: string }) => (
+            materialInformatica.map((ramo: { codigo: string; nombre: string }) => (
                 <Ramo
                     codigo={ramo.codigo}
                     nombre={ramo.nombre}
-                    especialidad="TEL"
-                    href={`/eit/examen-grado/telecomunicaciones/${ramo.codigo}`}
+                    especialidad="INF"
+                    href={`/eit/examen-grado/informatica/${ramo.codigo}`}
                 />
             ))
         }

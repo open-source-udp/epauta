@@ -11,10 +11,13 @@ import ramos from "../../data/eit/ramos.json";
             <a href="/">ePAUTA</a> | Informática y Telecomunicaciones
         </h1>
     </header>
+    <a href="/eit/examen-grado">
     <section class="grado">
-        <a href="/eit/examen-grado">Material para examen de grado</a>
-    </section>
-    <div class="grid">
+        **Material para examen de grado
+    </section></a>
+    <div  class="creditos">
+        <small>**Colaboración realizada por la estudiante egresada<a href="https://www.linkedin.com/in/imanjarufe/">Iman jarufe</a></small>
+    </div><div class="grid">
         {
             ramos.map((ramo: { codigo: string; nombre: string }) => (
                 <Ramo
@@ -29,7 +32,6 @@ import ramos from "../../data/eit/ramos.json";
 
 <style>
     .grid {
-        margin-top: 30px;
         display: grid;
         grid-template-columns: repeat(5, 1fr);
         gap: 1rem;
@@ -39,7 +41,19 @@ import ramos from "../../data/eit/ramos.json";
             grid-template-columns: repeat(2, 1fr);
         }
     }
+    .creditos {
+        color: white;
+        padding: 10px;
+        text-align: right;
+    }
+
+    small > a {
+        text-decoration: underline;
+        margin-left: 5px;
+    }
+
     .grado {
+        font-weight: 500;
         text-align: center;
         background-color: white;
         padding-left: 20px;
@@ -47,6 +61,9 @@ import ramos from "../../data/eit/ramos.json";
         padding-top: 15px;
         padding-bottom: 15px;
         border-radius: 5px;
+    }
+    .grado:hover {
+        color: #ef4444;
     }
 </style>
 
