@@ -52,6 +52,10 @@
     "nombre": "Gestión Organizacional"
   },
   {
+    "codigo": "CIT-2111",
+    "nombre": "Comunicaciones Digitales"
+  },
+  {
     "codigo": "CIT-2011",
     "nombre": "Sistemas Distribuidos"
   },
