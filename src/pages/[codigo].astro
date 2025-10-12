@@ -1,5 +1,5 @@
 ---
-import { supabase } from "../lib/db";
+import { storage } from "../lib/storage";
 import Layout from "../layouts/Layout.astro";
 import "@/styles/globals.css";
 import eii from "../data/eii/ramos.json";
@@ -23,7 +23,7 @@ export async function getStaticPaths() {
 const { codigo, nombre } = Astro.params;
 const searchParam = Astro.url.searchParams.get('search') || '';
 
-const { data, error } = await supabase.storage.from("recursos").list(codigo, {
+const { data, error } = await storage.from("epauta").list(codigo, {
     limit: 100,
     offset: 0,
     sortBy: { column: "name", order: "asc" },
@@ -31,8 +31,8 @@ const { data, error } = await supabase.storage.from("recursos").list(codigo, {
 
 const recursosBase = await Promise.all(
     data?.map(async (recurso) => {
-        const { data: publicUrlData } = await supabase.storage
-            .from("recursos")
+        const { data: publicUrlData } = storage
+            .from("epauta")
             .getPublicUrl(`${codigo}/${recurso.name}`);
         if (error) {
             console.error("Error fetching public URL:", error);
