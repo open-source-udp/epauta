@@ -1,5 +1,5 @@
 ---
-import { supabase } from "@/lib/db";
+import { storage } from "@/lib/storage";
 import {
 	CardDescription,
 	CardTitle,
@@ -9,17 +9,25 @@ interface Props {
 	nombre: string;
 	codigo: string;
 	href: string;
+	carrera: string; // plan-comun, eit, eoc, eii
 }
 
-const { href, nombre, codigo } = Astro.props;
+const { href, nombre, codigo, carrera } = Astro.props;
 
-const { data } = await supabase.storage.from("recursos").list(codigo, {
+// Construir la ruta completa: carrera/codigo
+const rutaCompleta = `${carrera}/${codigo}`;
+
+const { data, error } = await storage.from("epauta").list(rutaCompleta, {
 	limit: 100,
 	offset: 0,
 	sortBy: { column: "name", order: "asc" },
 });
 
-const cantidad = data!.length;
+if (error) {
+	console.error(`Error al listar archivos de ${rutaCompleta}:`, error);
+}
+
+const cantidad = data?.length || 0;
 ---
 
 <a href={href} class="card">

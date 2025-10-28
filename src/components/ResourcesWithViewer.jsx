@@ -1,9 +1,10 @@
 import { useState } from "react";
-import PDFViewer from "./PDFViewer.jsx";
+import FileViewer from "./FileViewer.jsx";
 import MaterialCard from "./MaterialCard.jsx";
 
 const ResourcesWithViewer = ({ recursos }) => {
   const [selectedUrl, setSelectedUrl] = useState();
+  const [selectedFileName, setSelectedFileName] = useState();
 
   return (
     <div
@@ -35,7 +36,10 @@ const ResourcesWithViewer = ({ recursos }) => {
                   nombre: recurso.name,
                   publicUrl: recurso.publicUrl,
                 }}
-                onClick={(url) => setSelectedUrl(url)}
+                onClick={(url) => {
+                  setSelectedUrl(url);
+                  setSelectedFileName(recurso.name);
+                }}
               />
             ))}
         </div>
@@ -43,8 +47,8 @@ const ResourcesWithViewer = ({ recursos }) => {
 
       <div>
         {selectedUrl ? (
-          <div className="pdf-viewer-container" style={{ height: "100%" }}>
-            <PDFViewer fileUrl={selectedUrl} />
+          <div className="file-viewer-container" style={{ height: "100%" }}>
+            <FileViewer fileUrl={selectedUrl} fileName={selectedFileName} />
           </div>
         ) : (
           <div
@@ -80,7 +84,7 @@ const ResourcesWithViewer = ({ recursos }) => {
                     margin: 0,
                   }}
                 >
-                  Archivo PDF no seleccionado
+                  Archivo no seleccionado
                 </p>
               </p>
             </div>

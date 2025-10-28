@@ -1,5 +1,5 @@
 ---
-import { supabase } from "@/lib/db";
+import { storage } from "@/lib/storage";
 import {
 	CardDescription,
 	CardTitle,
@@ -14,7 +14,7 @@ interface Props {
 
 const { href, nombre, codigo, especialidad } = Astro.props;
 
-const { data } = await supabase.storage.from("recursos").list("GRADE/"+especialidad+"/"+codigo, {
+const { data } = await storage.from("epauta").list("GRADE/"+especialidad+"/"+codigo, {
 	limit: 100,
 	offset: 0,
 	sortBy: { column: "name", order: "asc" },
