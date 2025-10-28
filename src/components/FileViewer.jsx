@@ -201,23 +201,27 @@ const FileViewer = ({ fileUrl, fileName }) => {
           <div style={{
             flex: 1,
             backgroundColor: "#f5f5f5",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
             overflow: "auto",
             padding: "1rem"
           }}>
-            <img
-              src={fileUrl}
-              alt={fileName || "Archivo"}
-              style={{
-                maxWidth: "100%",
-                maxHeight: "100%",
-                objectFit: "contain",
-                transform: `scale(${zoomLevel})`,
-                transition: "transform 0.2s ease"
-              }}
-            />
+            <div style={{
+              display: "inline-block",
+              minWidth: "100%",
+              textAlign: "center"
+            }}>
+              <img
+                src={fileUrl}
+                alt={fileName || "Archivo"}
+                style={{
+                  display: "inline-block",
+                  maxWidth: "none",
+                  width: `calc(100% * ${zoomLevel})`,
+                  height: "auto",
+                  transition: "width 0.2s ease",
+                  verticalAlign: "middle"
+                }}
+              />
+            </div>
           </div>
         </div>
       );
