@@ -18,7 +18,6 @@ export async function getStaticPaths() {
 }
 
 const { codigo } = Astro.params;
-const { nombre } = Astro.props;
 const searchParam = Astro.url.searchParams.get('search') || '';
 
 // Acceder a la carpeta plan-comun/CODIGO en R2
@@ -72,19 +71,6 @@ console.log(`Recursos después del filtro:`, recursos.length);
           </button>
         </form>
     </header>
-
-    {error && (
-        <div class="error-message">
-            <p>❌ Error al cargar los recursos: {error.message || 'Error desconocido'}</p>
-        </div>
-    )}
-
-    {!error && recursos.length === 0 && (
-        <div class="no-resources">
-            <p>📂 No hay recursos disponibles para este ramo en la carpeta: <code>plan-comun/{codigo}</code></p>
-            <p>Para agregar recursos, coloca archivos en <code>src/data/upload/plan-comun/{codigo}/</code> y ejecuta <code>npm run upload:r2</code></p>
-        </div>
-    )}
 
     {!error && recursos.length > 0 && (
         <ResourcesWithViewer recursos={recursos} client:visible />
