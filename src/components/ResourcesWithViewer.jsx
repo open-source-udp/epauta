@@ -45,7 +45,13 @@ const ResourcesWithViewer = ({ recursos }) => {
         </div>
       </div>
 
-      <div>
+      <div
+        style={{
+          position: "sticky",
+          top: "1rem",
+          alignSelf: "flex-start",
+        }}
+      >
         {selectedUrl ? (
           <div className="file-viewer-container" style={{ height: "100%" }}>
             <FileViewer fileUrl={selectedUrl} fileName={selectedFileName} />
@@ -56,7 +62,7 @@ const ResourcesWithViewer = ({ recursos }) => {
               display: "flex",
               flexDirection: "column",
               gap: "1rem",
-              height: "100%",
+              height: "80vh",
             }}
           >
             <div
