@@ -77,7 +77,7 @@ console.log(`Recursos después del filtro:`, recursos.length);
 
     {error && (
         <div class="error-message">
-            <p>❌ Error al cargar los recursos: {error.message || 'Error desconocido'}</p>
+            <p>❌ Error al cargar los recursos: {error || 'Error desconocido'}</p>
         </div>
     )}
 
