@@ -11,19 +11,22 @@ import ramos from "../../data/eit/ramos.json";
             <a href="/">ePAUTA</a> | Informática y Telecomunicaciones
         </h1>
     </header>
-    <a href="/eit/examen-grado">
+    <!-- <a href="/eit/examen-grado">
     <section class="grado">
         **Material para examen de grado
-    </section></a>
-    <div  class="creditos">
+    </section></a> -->
+    <!-- <div  class="creditos">
         <small>**Colaboración realizada por la estudiante egresada<a href="https://www.linkedin.com/in/imanjarufe/">Iman jarufe</a></small>
-    </div><div class="grid">
+    </div>
+     -->
+    <div class="grid">
         {
             ramos.map((ramo: { codigo: string; nombre: string }) => (
                 <Ramo
                     codigo={ramo.codigo}
                     nombre={ramo.nombre}
-                    href={`/${ramo.codigo}`}
+                    href={`/eit/${ramo.codigo}`}
+                    carrera="eit"
                 />
             ))
         }

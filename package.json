@@ -8,7 +8,8 @@
     "build": "astro check && astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "test:r2": "node scripts/test-r2-connection.js"
+    "test:r2": "node scripts/test-r2-connection.js",
+    "upload:r2": "node scripts/upload-to-r2.js"
   },
   "dependencies": {
     "@astrojs/check": "^0.5.1",

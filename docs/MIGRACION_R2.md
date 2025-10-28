@@ -43,23 +43,36 @@ Todos los archivos que usaban `supabase.storage` han sido actualizados para usar
 
 ### 4. Estructura del bucket
 
-La estructura del bucket en R2 sigue siendo la misma que en Supabase:
+La estructura del bucket en R2 organiza los archivos por carrera:
 
 ```
-recursos/
-├── CODIGO_RAMO_1/
-│   ├── archivo1.pdf
-│   └── archivo2.pdf
-├── CODIGO_RAMO_2/
-│   └── archivo3.pdf
-├── GRADE/
-│   ├── INF/
-│   │   └── CODIGO/
-│   ├── GES/
-│   │   └── CODIGO/
-│   └── TEL/
-│       └── CODIGO/
+epauta/                        # Bucket
+├── plan-comun/
+│   ├── CBM-1000/
+│   │   ├── pauta_c1.pdf
+│   │   └── pauta_c2.pdf
+│   └── CIT-1000/
+│       └── apuntes.pdf
+├── eit/
+│   ├── CIT-2006/
+│   │   └── proyecto.pdf
+│   └── CIT-2007/
+│       └── guia.pdf
+├── eoc/
+│   ├── COC-2001/
+│   │   └── material.pdf
+│   └── ...
+└── eii/
+    ├── CII-2401/
+    │   └── documento.pdf
+    └── ...
 ```
+
+**Rutas de acceso:**
+- Plan Común: `/plan-comun/{codigo}` → `epauta/plan-comun/CODIGO/`
+- EIT: `/eit/{codigo}` → `epauta/eit/CODIGO/`
+- EOC: `/eoc/{codigo}` → `epauta/eoc/CODIGO/`
+- EII: `/eii/{codigo}` → `epauta/eii/CODIGO/`
 
 ## Configuración
 
@@ -109,18 +122,47 @@ Para servir archivos públicamente sin necesidad de URLs firmadas:
 4. Configura un dominio personalizado (recomendado) o usa el dominio R2.dev
 5. Añade el dominio a la variable `R2_PUBLIC_DOMAIN` en tu `.env`
 
-### 5. Migrar archivos de Supabase a R2
+### 5. Subir archivos a R2
 
-Puedes usar herramientas como `rclone` o scripts personalizados para migrar los archivos:
+#### Opción 1: Script automatizado (Recomendado)
 
-**Ejemplo con AWS CLI (compatible con R2):**
+El proyecto incluye un script para subir archivos automáticamente:
+
+1. **Coloca tus archivos** en la carpeta correspondiente de `src/data/upload/`:
+   ```
+   src/data/upload/
+   ├── plan-comun/
+   │   └── CBM-1000/
+   │       └── pauta.pdf
+   ├── eit/
+   │   └── CIT-2006/
+   │       └── proyecto.pdf
+   └── ...
+   ```
+
+2. **Ejecuta el script de subida**:
+   ```bash
+   npm run upload:r2
+   ```
+
+El script:
+- Lee todas las carpetas de carreras
+- Sube automáticamente los archivos a R2
+- Crea la estructura correcta de carpetas
+- Muestra un resumen de la operación
+
+Para más detalles, consulta: `src/data/upload/README.md` y `scripts/README.md`
+
+#### Opción 2: AWS CLI (manual)
+
+También puedes usar AWS CLI para migraciones masivas:
 
 ```bash
 # Configurar AWS CLI con credenciales de R2
 aws configure --profile r2
 
 # Copiar archivos (necesitarías exportar desde Supabase primero)
-aws s3 sync ./archivos-supabase s3://recursos --endpoint-url=https://<account_id>.r2.cloudflarestorage.com --profile r2
+aws s3 sync ./archivos-supabase s3://epauta --endpoint-url=https://<account_id>.r2.cloudflarestorage.com --profile r2
 ```
 
 ## API de Storage
@@ -130,7 +172,8 @@ El nuevo módulo de storage mantiene compatibilidad con la API de Supabase:
 ### Listar archivos
 
 ```typescript
-const { data, error } = await storage.from("epauta").list("CODIGO_RAMO", {
+// Ejemplo: listar archivos de CIT-2006 en EIT
+const { data, error } = await storage.from("epauta").list("eit/CIT-2006", {
   limit: 100,
   offset: 0,
   sortBy: { column: "name", order: "asc" },
@@ -140,17 +183,19 @@ const { data, error } = await storage.from("epauta").list("CODIGO_RAMO", {
 ### Obtener URL pública
 
 ```typescript
+// Ejemplo: obtener URL de un archivo en Plan Común
 const { data: publicUrlData } = storage
   .from("epauta")
-  .getPublicUrl("CODIGO_RAMO/archivo.pdf");
+  .getPublicUrl("plan-comun/CBM-1000/pauta_c1.pdf");
 ```
 
 ### Crear URL firmada (opcional)
 
 ```typescript
+// Ejemplo: crear URL firmada para un archivo en EOC
 const { data, error } = await storage
   .from("epauta")
-  .createSignedUrl("CODIGO_RAMO/archivo.pdf", 3600);
+  .createSignedUrl("eoc/COC-2001/material.pdf", 3600);
 ```
 
 ## Ventajas de R2 vs Supabase Storage

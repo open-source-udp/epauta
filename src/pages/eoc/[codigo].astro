@@ -1,0 +1,193 @@
+---
+import { storage } from "../../lib/storage";
+import Layout from "../../layouts/Layout.astro";
+import "@/styles/globals.css";
+import eoc from "../../data/eoc/ramos.json";
+
+import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
+
+import ResourcesWithViewer from "@/components/ResourcesWithViewer.jsx";
+
+export async function getStaticPaths() {
+    return eoc.map(({ codigo, nombre }) => {
+        return {
+            params: { codigo },
+            props: { nombre },
+        };
+    });
+}
+
+const { codigo } = Astro.params;
+const { nombre } = Astro.props;
+const searchParam = Astro.url.searchParams.get('search') || '';
+
+// Acceder a la carpeta eoc/CODIGO en R2
+const { data, error } = await storage.from("epauta").list(`eoc/${codigo}`, {
+    limit: 100,
+    offset: 0,
+    sortBy: { column: "name", order: "asc" },
+});
+
+// Debug: Verificar si hay datos o errores
+if (error) {
+    console.error("Error al listar archivos de R2:", error);
+}
+console.log(`Archivos encontrados en eoc/${codigo}:`, data?.length || 0);
+console.log("Datos:", data);
+
+const recursosBase = await Promise.all(
+    data?.map(async (recurso) => {
+        const fullPath = `eoc/${codigo}/${recurso.name}`;
+        const { data: publicUrlData} = storage
+            .from("epauta")
+            .getPublicUrl(fullPath);
+        
+        return { 
+            ...recurso, 
+            publicUrl: publicUrlData?.publicUrl, 
+            codigo 
+        };
+    }) ?? []
+);
+
+const recursos = recursosBase.filter((recurso) => {
+    return recurso.name.toLowerCase().includes(searchParam.toLowerCase());
+});
+
+console.log(`Recursos después del filtro:`, recursos.length);
+---
+
+<Layout title="ePauta">
+    <header class="header">
+        <h1 class="ramo"><a href="/">ePAUTA</a> / <a href="/eoc">EOC</a> / {codigo}</h1>
+
+        <form action="" method="get">
+          <input
+            type="text"
+            name="search"
+            placeholder="Buscar..."
+            value={searchParam}
+            class="input-search"
+          />
+          <button type="submit" class="button-search">
+            <MagnifyingGlassIcon />
+          </button>
+        </form>
+    </header>
+
+    {error && (
+        <div class="error-message">
+            <p>❌ Error al cargar los recursos: {error.message || 'Error desconocido'}</p>
+        </div>
+    )}
+
+    {!error && recursos.length === 0 && (
+        <div class="no-resources">
+            <p>📂 No hay recursos disponibles para este ramo en la carpeta: <code>eoc/{codigo}</code></p>
+            <p>Para agregar recursos, coloca archivos en <code>src/data/upload/eoc/{codigo}/</code> y ejecuta <code>npm run upload:r2</code></p>
+        </div>
+    )}
+
+    {!error && recursos.length > 0 && (
+        <ResourcesWithViewer recursos={recursos} client:visible />
+    )}
+</Layout>
+
+
+<style>
+    .ramo-title {
+        font-size: 1.75rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        color: #1f2937;
+    }
+
+    header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        margin-top: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    @media screen and (max-width: 768px) {
+        .ramo-title {
+            font-size: 1.5rem;
+        }
+
+        header {
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        form {
+            width: 100%;
+        }
+    }
+
+    form {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .input-search {
+        padding: 0.5rem;
+        border: 1px solid #ccc;
+        border-radius: 0.25rem;
+        flex: 1;
+        min-width: 200px;
+    }
+
+    .button-search {
+        background-color: #fff;
+        color: #ef4444;
+        padding: 0.5rem 1rem;
+        border: 1px solid #e5e7eb;
+        border-radius: 0.25rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .button-search:hover {
+        background-color: #ef4444;
+        color: #fff;
+        border-color: #ef4444;
+    }
+
+    .error-message {
+        margin-top: 2rem;
+        padding: 1.5rem;
+        background-color: #fee;
+        border: 2px solid #ef4444;
+        border-radius: 0.5rem;
+        color: #b91c1c;
+    }
+
+    .error-message p {
+        margin: 0;
+        font-size: 1rem;
+    }
+
+    .no-resources {
+        margin-top: 2rem;
+        padding: 2rem;
+        background-color: #f3f4f6;
+        border: 2px dashed #9ca3af;
+        border-radius: 0.5rem;
+        text-align: center;
+    }
+
+    .no-resources p {
+        margin: 0.5rem 0;
+        color: #4b5563;
+    }
+
+    .no-resources code {
+        background-color: #e5e7eb;
+        padding: 0.25rem 0.5rem;
+        border-radius: 0.25rem;
+        font-family: monospace;
+        color: #1f2937;
+    }
+</style>
