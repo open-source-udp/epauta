@@ -75,19 +75,6 @@ console.log(`Recursos después del filtro:`, recursos.length);
         </form>
     </header>
 
-    {error && (
-        <div class="error-message">
-            <p>❌ Error al cargar los recursos: {error || 'Error desconocido'}</p>
-        </div>
-    )}
-
-    {!error && recursos.length === 0 && (
-        <div class="no-resources">
-            <p>📂 No hay recursos disponibles para este ramo en la carpeta: <code>eii/{codigo}</code></p>
-            <p>Para agregar recursos, coloca archivos en <code>src/data/upload/eii/{codigo}/</code> y ejecuta <code>npm run upload:r2</code></p>
-        </div>
-    )}
-
     {!error && recursos.length > 0 && (
         <ResourcesWithViewer recursos={recursos} client:visible />
     )}
