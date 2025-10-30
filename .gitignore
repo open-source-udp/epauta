@@ -23,3 +23,4 @@ pnpm-debug.log*
 src/data/upload
 
 .vercel
+coverage
