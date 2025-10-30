@@ -119,10 +119,7 @@ Abre [http://localhost:4321](http://localhost:4321) en tu navegador.
 
 ## 🔧 Configuración de Cloudflare R2
 
-Este proyecto utiliza Cloudflare R2 para el almacenamiento de archivos. Para configurar R2:
-
-1. Consulta la [Guía rápida de R2](./docs/GUIA_RAPIDA_R2.md)
-2. Si migras desde Supabase Storage, revisa la [Guía de migración](./docs/MIGRACION_R2.md)
+Este proyecto utiliza Cloudflare R2 para el almacenamiento de archivos. Para configurar R2 consulta la [Guía rápida de R2](./docs/GUIA_RAPIDA_R2.md)
 
 ## 🤝 Contribuir
 
