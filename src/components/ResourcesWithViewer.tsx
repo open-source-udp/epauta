@@ -9,10 +9,8 @@ import { MaterialCard } from './MaterialCard'
 
 const EmptyState = () => (
   <div className="flex flex-col gap-4 h-[80vh]">
-    <div className="flex-1 bg-gray-200 rounded animate-pulse">
-      <p className="p-4 m-0 text-white">
-        <span className="text-base font-normal">Archivo no seleccionado</span>
-      </p>
+    <div className="flex-1 bg-gray-200 rounded animate-pulse flex items-center justify-center">
+      <p className="p-4 m-0 text-black font-normal">Archivo no seleccionado</p>
     </div>
   </div>
 )
