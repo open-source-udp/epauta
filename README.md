@@ -80,15 +80,15 @@ Abre [http://localhost:4321](http://localhost:4321) en tu navegador.
 
 ## 📦 Scripts disponibles
 
-| Comando | Acción |
-|---------|--------|
-| `npm install` | Instala las dependencias |
-| `npm run dev` | Inicia el servidor de desarrollo en `localhost:4321` |
-| `npm run build` | Construye el sitio para producción en `./dist/` |
-| `npm run preview` | Previsualiza la build de producción localmente |
-| `npm run astro` | Ejecuta comandos de Astro CLI |
-| `npm run test:r2` | Prueba la conexión con Cloudflare R2 |
-| `npm run upload:r2` | Sube archivos a Cloudflare R2 |
+| Comando             | Acción                                               |
+| ------------------- | ---------------------------------------------------- |
+| `npm install`       | Instala las dependencias                             |
+| `npm run dev`       | Inicia el servidor de desarrollo en `localhost:4321` |
+| `npm run build`     | Construye el sitio para producción en `./dist/`      |
+| `npm run preview`   | Previsualiza la build de producción localmente       |
+| `npm run astro`     | Ejecuta comandos de Astro CLI                        |
+| `npm run test:r2`   | Prueba la conexión con Cloudflare R2                 |
+| `npm run upload:r2` | Sube archivos a Cloudflare R2                        |
 
 ## 📁 Estructura del proyecto
 
@@ -143,12 +143,6 @@ Este proyecto está bajo la Licencia MIT. Consulta el archivo [LICENSE](./LICENS
 
 - GitHub: [@polaarts](https://github.com/polaarts)
 
-## 🙏 Agradecimientos
-
-- Comunidad de Astro por el excelente framework
-- shadcn por los componentes UI
-- Todos los contribuidores que hacen posible este proyecto
-
 ## 📞 Soporte
 
 Si encuentras un bug o tienes una sugerencia:
@@ -158,4 +152,4 @@ Si encuentras un bug o tienes una sugerencia:
 
 ---
 
-Hecho con ❤️ para la comunidad educativa
+Hecho con ❤️ para la comunidad universitaria.
