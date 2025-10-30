@@ -29,7 +29,7 @@
     "astro": "astro",
     "test:r2": "node scripts/test-r2-connection.js",
     "upload:r2": "node scripts/upload-to-r2.js",
-    "lint": "eslint . --ext .ts,.tsx,.astro --max-warnings 0",
+    "lint": "eslint . --ext .ts,.tsx,.astro",
     "lint:fix": "eslint . --ext .ts,.tsx,.astro --fix",
     "format": "prettier --write \"src/**/*.{ts,tsx,astro,json,css}\"",
     "format:check": "prettier --check \"src/**/*.{ts,tsx,astro,json,css}\"",

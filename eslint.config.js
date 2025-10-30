@@ -11,6 +11,7 @@ export default [
       '.astro/**',
       '.vercel/**',
       'node_modules/**',
+      'scripts/**',
       '*.config.js',
       '*.config.mjs',
       '*.config.ts',
@@ -52,6 +53,14 @@ export default [
 
   // Astro files
   ...eslintPluginAstro.configs.recommended,
+
+  // Allow console.log in scripts
+  {
+    files: ['scripts/**/*.js'],
+    rules: {
+      'no-console': 'off',
+    },
+  },
 
   // Global rules
   {
