@@ -1,4 +1,4 @@
-import { expect, afterEach, vi } from 'vitest'
+import { afterEach, vi } from 'vitest'
 import { cleanup } from '@testing-library/react'
 import '@testing-library/jest-dom/vitest'
 
@@ -23,6 +23,7 @@ Object.defineProperty(window, 'matchMedia', {
 })
 
 // Mock IntersectionObserver
+/* eslint-disable @typescript-eslint/no-explicit-any */
 global.IntersectionObserver = class IntersectionObserver {
   constructor() {}
   disconnect() {}
@@ -32,6 +33,7 @@ global.IntersectionObserver = class IntersectionObserver {
   }
   unobserve() {}
 } as any
+/* eslint-enable @typescript-eslint/no-explicit-any */
 
 // Mock import.meta.env
 vi.stubGlobal('import.meta', {
