@@ -267,10 +267,16 @@ export function getFileCategory(extension: string): FileCategory {
 export function getFileExtension(fileNameOrUrl: string): string {
   if (!fileNameOrUrl) return ''
 
+  // Remove query parameters
   const urlWithoutParams = fileNameOrUrl.split('?')[0]
 
-  const parts = urlWithoutParams.split('.')
+  // Extract just the filename (last part after /)
+  const fileName = urlWithoutParams.split('/').pop() || ''
 
+  // Split by . to get extension
+  const parts = fileName.split('.')
+
+  // If no dots or only one part, no extension found, default to pdf
   if (parts.length === 1) return 'pdf'
 
   return parts.pop()?.toLowerCase() || ''
