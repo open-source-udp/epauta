@@ -12,6 +12,7 @@ export default [
       '.vercel/**',
       'node_modules/**',
       'scripts/**',
+      'coverage/**',
       '*.config.js',
       '*.config.mjs',
       '*.config.ts',

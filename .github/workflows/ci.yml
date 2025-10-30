@@ -27,6 +27,15 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Check code formatting
+        run: npm run format:check
+
+      - name: Run linter
+        run: npm run lint
+
+      - name: Run tests
+        run: npm run test:run
+
       - name: Run Astro check
         run: npm run astro check
 
@@ -39,4 +48,12 @@ jobs:
         with:
           name: build-output
           path: dist/
+          retention-days: 7
+      
+      - name: Upload coverage reports
+        if: matrix.node-version == '20.x'
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage/
           retention-days: 7
