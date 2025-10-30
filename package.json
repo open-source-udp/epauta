@@ -1,7 +1,26 @@
 {
-  "name": "frontend",
+  "name": "epauta",
   "type": "module",
-  "version": "0.0.1",
+  "version": "1.0.0",
+  "description": "Plataforma educativa open source para compartir y visualizar recursos académicos universitarios",
+  "author": "Samuel Angulo <https://github.com/polaarts>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/open-source-udp/epauta.git"
+  },
+  "bugs": {
+    "url": "https://github.com/open-source-udp/epauta/issues"
+  },
+  "homepage": "https://github.com/open-source-udp/epauta#readme",
+  "keywords": [
+    "education",
+    "university",
+    "resources",
+    "astro",
+    "react",
+    "pdf-viewer"
+  ],
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
