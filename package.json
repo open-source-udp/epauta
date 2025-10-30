@@ -28,7 +28,12 @@
     "preview": "astro preview",
     "astro": "astro",
     "test:r2": "node scripts/test-r2-connection.js",
-    "upload:r2": "node scripts/upload-to-r2.js"
+    "upload:r2": "node scripts/upload-to-r2.js",
+    "lint": "eslint . --ext .ts,.tsx,.astro --max-warnings 0",
+    "lint:fix": "eslint . --ext .ts,.tsx,.astro --fix",
+    "format": "prettier --write \"src/**/*.{ts,tsx,astro,json,css}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx,astro,json,css}\"",
+    "check": "astro check && npm run lint && npm run format:check"
   },
   "dependencies": {
     "@astrojs/check": "^0.5.1",
@@ -65,7 +70,15 @@
   },
   "devDependencies": {
     "@types/node": "^20.11.17",
+    "@typescript-eslint/eslint-plugin": "^8.46.2",
+    "@typescript-eslint/parser": "^8.46.2",
     "dotenv": "^17.2.3",
+    "eslint": "^9.38.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-astro": "^1.4.0",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "prettier": "^3.6.2",
+    "prettier-plugin-astro": "^0.14.1",
     "typescript": "^5.3.3"
   }
 }
