@@ -11,7 +11,8 @@ const r2Client = new S3Client({
   },
 })
 
-const BUCKET_NAME = import.meta.env.R2_BUCKET_NAME || 'epauta'
+// Bucket name is configured via environment variables or passed directly
+// const _BUCKET_NAME = import.meta.env.R2_BUCKET_NAME || 'epauta'
 
 interface FileObject {
   name: string
@@ -19,7 +20,7 @@ interface FileObject {
   updated_at: string | null
   created_at: string | null
   last_accessed_at: string | null
-  metadata: Record<string, any> | null
+  metadata: Record<string, unknown> | null
 }
 
 interface ListOptions {
