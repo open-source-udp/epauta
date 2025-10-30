@@ -1,18 +1,18 @@
-import type { MaterialCardProps } from '@/types';
+import type { MaterialCardProps } from '@/types'
 
 export const MaterialCard = ({ material, onClick }: MaterialCardProps) => {
   const handleClick = () => {
     if (onClick) {
-      onClick(material.publicUrl);
+      onClick(material.publicUrl)
     }
-  };
+  }
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault();
-      handleClick();
+      event.preventDefault()
+      handleClick()
     }
-  };
+  }
 
   return (
     <div
@@ -27,7 +27,7 @@ export const MaterialCard = ({ material, onClick }: MaterialCardProps) => {
         {material.nombre}
       </h3>
     </div>
-  );
-};
+  )
+}
 
-export default MaterialCard;
+export default MaterialCard

@@ -4,18 +4,18 @@
  * Usa el componente reutilizable CareerCoursePage
  */
 
-import CareerCoursePage from "@/components/CareerCoursePage.astro";
-import eii from "@/data/eii/ramos.json";
+import CareerCoursePage from '@/components/CareerCoursePage.astro'
+import eii from '@/data/eii/ramos.json'
 
 export async function getStaticPaths() {
   return eii.map(({ codigo, nombre }) => ({
     params: { codigo },
     props: { nombre },
-  }));
+  }))
 }
 
-const { codigo } = Astro.params;
-const { nombre } = Astro.props;
+const { codigo } = Astro.params
+const { nombre } = Astro.props
 ---
 
 <CareerCoursePage carrera="eii" codigo={codigo} nombre={nombre} />

@@ -1,31 +1,31 @@
-import { useState } from 'react';
-import { Viewer, Worker } from '@react-pdf-viewer/core';
-import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
-import type { FileViewerProps } from '@/types';
-import { getFileExtension, getFileCategory } from '@/types';
+import { useState } from 'react'
+import { Viewer, Worker } from '@react-pdf-viewer/core'
+import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout'
+import type { FileViewerProps } from '@/types'
+import { getFileExtension, getFileCategory } from '@/types'
 
-import '@react-pdf-viewer/full-screen/lib/styles/index.css';
-import '@react-pdf-viewer/core/lib/styles/index.css';
-import '@react-pdf-viewer/default-layout/lib/styles/index.css';
-import '@react-pdf-viewer/toolbar/lib/styles/index.css';
+import '@react-pdf-viewer/full-screen/lib/styles/index.css'
+import '@react-pdf-viewer/core/lib/styles/index.css'
+import '@react-pdf-viewer/default-layout/lib/styles/index.css'
+import '@react-pdf-viewer/toolbar/lib/styles/index.css'
 
 // Constantes
-const MIN_ZOOM = 0.5;
-const MAX_ZOOM = 3;
-const ZOOM_STEP = 0.25;
-const PDF_WORKER_URL = 'https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js';
+const MIN_ZOOM = 0.5
+const MAX_ZOOM = 3
+const ZOOM_STEP = 0.25
+const PDF_WORKER_URL = 'https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js'
 
 // ============================================================================
 // Subcomponentes
 // ============================================================================
 
 interface ToolbarProps {
-  fileName: string;
-  zoomLevel: number;
-  onZoomIn: () => void;
-  onZoomOut: () => void;
-  onResetZoom: () => void;
-  onDownload: () => void;
+  fileName: string
+  zoomLevel: number
+  onZoomIn: () => void
+  onZoomOut: () => void
+  onResetZoom: () => void
+  onDownload: () => void
 }
 
 const Toolbar = ({
@@ -81,10 +81,10 @@ const Toolbar = ({
       </button>
     </div>
   </div>
-);
+)
 
 interface UnsupportedFileViewProps {
-  fileName: string;
+  fileName: string
 }
 
 const UnsupportedFileView = ({ fileName }: UnsupportedFileViewProps) => (
@@ -94,47 +94,45 @@ const UnsupportedFileView = ({ fileName }: UnsupportedFileViewProps) => (
     <p className="text-gray-500 text-sm">
       El archivo <span className="font-medium">{fileName}</span> no puede ser visualizado.
     </p>
-    <p className="text-gray-500 text-sm mt-1">
-      Usa el botón de descarga en la barra superior.
-    </p>
+    <p className="text-gray-500 text-sm mt-1">Usa el botón de descarga en la barra superior.</p>
   </div>
-);
+)
 
 // ============================================================================
 // Componente Principal
 // ============================================================================
 
 export const FileViewer = ({ fileUrl, fileName }: FileViewerProps) => {
-  const defaultLayoutPluginInstance = defaultLayoutPlugin();
-  const [zoomLevel, setZoomLevel] = useState(1);
+  const defaultLayoutPluginInstance = defaultLayoutPlugin()
+  const [zoomLevel, setZoomLevel] = useState(1)
 
   // Detectar tipo de archivo
-  const extension = getFileExtension(fileUrl || fileName);
-  const fileCategory = getFileCategory(extension);
+  const extension = getFileExtension(fileUrl || fileName)
+  const fileCategory = getFileCategory(extension)
 
   // Handlers de zoom
   const handleZoomIn = () => {
-    setZoomLevel((prev) => Math.min(prev + ZOOM_STEP, MAX_ZOOM));
-  };
+    setZoomLevel((prev) => Math.min(prev + ZOOM_STEP, MAX_ZOOM))
+  }
 
   const handleZoomOut = () => {
-    setZoomLevel((prev) => Math.max(prev - ZOOM_STEP, MIN_ZOOM));
-  };
+    setZoomLevel((prev) => Math.max(prev - ZOOM_STEP, MIN_ZOOM))
+  }
 
   const handleResetZoom = () => {
-    setZoomLevel(1);
-  };
+    setZoomLevel(1)
+  }
 
   const handleDownload = () => {
-    const link = document.createElement('a');
-    link.href = fileUrl;
-    link.download = fileName || 'archivo';
-    link.target = '_blank';
-    link.rel = 'noopener noreferrer';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
+    const link = document.createElement('a')
+    link.href = fileUrl
+    link.download = fileName || 'archivo'
+    link.target = '_blank'
+    link.rel = 'noopener noreferrer'
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  }
 
   // Renderizar visor de PDF
   const renderPDFViewer = () => (
@@ -143,7 +141,7 @@ export const FileViewer = ({ fileUrl, fileName }: FileViewerProps) => {
         <Viewer fileUrl={fileUrl} plugins={[defaultLayoutPluginInstance]} />
       </Worker>
     </div>
-  );
+  )
 
   // Renderizar visor de imágenes
   const renderImageViewer = () => (
@@ -169,11 +167,11 @@ export const FileViewer = ({ fileUrl, fileName }: FileViewerProps) => {
         </div>
       </div>
     </div>
-  );
+  )
 
   // Renderizar visor de documentos de Office
   const renderOfficeViewer = () => {
-    const viewerUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(fileUrl)}&embedded=true`;
+    const viewerUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(fileUrl)}&embedded=true`
 
     return (
       <div className="h-[80vh] border border-gray-300 flex flex-col">
@@ -202,8 +200,8 @@ export const FileViewer = ({ fileUrl, fileName }: FileViewerProps) => {
           />
         </div>
       </div>
-    );
-  };
+    )
+  }
 
   // Renderizar vista de archivo no soportado
   const renderUnsupportedView = () => (
@@ -218,20 +216,20 @@ export const FileViewer = ({ fileUrl, fileName }: FileViewerProps) => {
       />
       <UnsupportedFileView fileName={fileName} />
     </div>
-  );
+  )
 
   // Seleccionar el visor apropiado según el tipo de archivo
   switch (fileCategory) {
     case 'pdf':
-      return renderPDFViewer();
+      return renderPDFViewer()
     case 'image':
-      return renderImageViewer();
+      return renderImageViewer()
     case 'office':
-      return renderOfficeViewer();
+      return renderOfficeViewer()
     case 'unsupported':
     default:
-      return renderUnsupportedView();
+      return renderUnsupportedView()
   }
-};
+}
 
-export default FileViewer;
+export default FileViewer

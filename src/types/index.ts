@@ -13,28 +13,28 @@
  * Recurso educativo (archivo almacenado en R2)
  */
 export interface Recurso {
-  name: string;
-  id: string;
-  publicUrl: string;
-  updated_at: string | null;
-  created_at: string | null;
-  codigo?: string;
+  name: string
+  id: string
+  publicUrl: string
+  updated_at: string | null
+  created_at: string | null
+  codigo?: string
 }
 
 /**
  * Ramo/Asignatura
  */
 export interface Ramo {
-  codigo: string;
-  nombre: string;
+  codigo: string
+  nombre: string
 }
 
 /**
  * Material de grado (específico de EIT)
  */
 export interface MaterialGrado {
-  codigo: string;
-  nombre: string;
+  codigo: string
+  nombre: string
 }
 
 // ============================================================================
@@ -44,32 +44,39 @@ export interface MaterialGrado {
 /**
  * Carreras académicas disponibles en la plataforma
  */
-export type Carrera = 'plan-comun' | 'eit' | 'eoc' | 'eii';
+export type Carrera = 'plan-comun' | 'eit' | 'eoc' | 'eii'
 
 /**
  * Mapeo de carreras a sus nombres completos
  */
 export const CARRERA_NAMES: Record<Carrera, string> = {
   'plan-comun': 'Plan Común',
-  'eit': 'Ingeniería Civil en Informática y Telecomunicaciones',
-  'eoc': 'Ingeniería Civil en Obras Civiles',
-  'eii': 'Ingeniería Civil Industrial',
-} as const;
+  eit: 'Ingeniería Civil en Informática y Telecomunicaciones',
+  eoc: 'Ingeniería Civil en Obras Civiles',
+  eii: 'Ingeniería Civil Industrial',
+} as const
 
 /**
  * Extensiones de archivos soportadas
  */
 export type FileExtension =
   | 'pdf'
-  | 'jpg' | 'jpeg' | 'png' | 'gif' | 'webp'
-  | 'doc' | 'docx'
-  | 'xls' | 'xlsx'
-  | 'ppt' | 'pptx';
+  | 'jpg'
+  | 'jpeg'
+  | 'png'
+  | 'gif'
+  | 'webp'
+  | 'doc'
+  | 'docx'
+  | 'xls'
+  | 'xlsx'
+  | 'ppt'
+  | 'pptx'
 
 /**
  * Categorías de tipos de archivo
  */
-export type FileCategory = 'pdf' | 'image' | 'office' | 'unsupported';
+export type FileCategory = 'pdf' | 'image' | 'office' | 'unsupported'
 
 // ============================================================================
 // TIPOS DE STORAGE (R2/S3)
@@ -79,32 +86,32 @@ export type FileCategory = 'pdf' | 'image' | 'office' | 'unsupported';
  * Objeto de archivo retornado por el storage layer
  */
 export interface FileObject {
-  name: string;
-  id: string;
-  updated_at: string | null;
-  created_at: string | null;
-  last_accessed_at: string | null;
-  metadata: Record<string, any> | null;
+  name: string
+  id: string
+  updated_at: string | null
+  created_at: string | null
+  last_accessed_at: string | null
+  metadata: Record<string, any> | null
 }
 
 /**
  * Opciones para listar archivos del storage
  */
 export interface ListOptions {
-  limit?: number;
-  offset?: number;
+  limit?: number
+  offset?: number
   sortBy?: {
-    column: string;
-    order: 'asc' | 'desc';
-  };
+    column: string
+    order: 'asc' | 'desc'
+  }
 }
 
 /**
  * Respuesta del storage layer
  */
 export interface StorageResponse<T> {
-  data: T | null;
-  error: Error | unknown | null;
+  data: T | null
+  error: Error | unknown | null
 }
 
 // ============================================================================
@@ -115,22 +122,22 @@ export interface StorageResponse<T> {
  * Opciones de filtrado de recursos
  */
 export interface FilterOptions {
-  search?: string;
-  sortBy?: 'name' | 'date';
-  order?: 'asc' | 'desc';
-  fileType?: FileExtension;
+  search?: string
+  sortBy?: 'name' | 'date'
+  order?: 'asc' | 'desc'
+  fileType?: FileExtension
 }
 
 /**
  * Parámetros de búsqueda avanzada
  */
 export interface SearchParams {
-  query: string;
-  carrera?: Carrera;
-  codigo?: string;
-  fileType?: FileExtension;
-  page?: number;
-  perPage?: number;
+  query: string
+  carrera?: Carrera
+  codigo?: string
+  fileType?: FileExtension
+  page?: number
+  perPage?: number
 }
 
 // ============================================================================
@@ -142,36 +149,36 @@ export interface SearchParams {
  */
 export interface MaterialCardProps {
   material: {
-    nombre: string;
-    publicUrl: string;
-  };
-  onClick?: (url: string) => void;
+    nombre: string
+    publicUrl: string
+  }
+  onClick?: (url: string) => void
 }
 
 /**
  * Props para el FileViewer
  */
 export interface FileViewerProps {
-  fileUrl: string;
-  fileName: string;
+  fileUrl: string
+  fileName: string
 }
 
 /**
  * Props para ResourcesWithViewer
  */
 export interface ResourcesWithViewerProps {
-  recursos: Recurso[];
+  recursos: Recurso[]
 }
 
 /**
  * Props para componentes de Ramo/Card
  */
 export interface RamoCardProps {
-  nombre: string;
-  codigo: string;
-  href: string;
-  carrera: Carrera;
-  cantidad?: number;
+  nombre: string
+  codigo: string
+  href: string
+  carrera: Carrera
+  cantidad?: number
 }
 
 // ============================================================================
@@ -182,9 +189,9 @@ export interface RamoCardProps {
  * Props para páginas dinámicas de carrera/curso
  */
 export interface CoursePageProps {
-  codigo: string;
-  nombre: string;
-  carrera: Carrera;
+  codigo: string
+  nombre: string
+  carrera: Carrera
 }
 
 /**
@@ -192,11 +199,11 @@ export interface CoursePageProps {
  */
 export interface StaticPathParams {
   params: {
-    codigo: string;
-  };
+    codigo: string
+  }
   props: {
-    nombre: string;
-  };
+    nombre: string
+  }
 }
 
 // ============================================================================
@@ -207,7 +214,7 @@ export interface StaticPathParams {
  * Verifica si una cadena es una carrera válida
  */
 export function isCarrera(value: string): value is Carrera {
-  return ['plan-comun', 'eit', 'eoc', 'eii'].includes(value);
+  return ['plan-comun', 'eit', 'eoc', 'eii'].includes(value)
 }
 
 /**
@@ -215,29 +222,39 @@ export function isCarrera(value: string): value is Carrera {
  */
 export function isValidExtension(ext: string): ext is FileExtension {
   const validExtensions: FileExtension[] = [
-    'pdf', 'jpg', 'jpeg', 'png', 'gif', 'webp',
-    'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx'
-  ];
-  return validExtensions.includes(ext as FileExtension);
+    'pdf',
+    'jpg',
+    'jpeg',
+    'png',
+    'gif',
+    'webp',
+    'doc',
+    'docx',
+    'xls',
+    'xlsx',
+    'ppt',
+    'pptx',
+  ]
+  return validExtensions.includes(ext as FileExtension)
 }
 
 /**
  * Determina la categoría de un archivo basado en su extensión
  */
 export function getFileCategory(extension: string): FileCategory {
-  const ext = extension.toLowerCase();
+  const ext = extension.toLowerCase()
 
-  if (ext === 'pdf') return 'pdf';
+  if (ext === 'pdf') return 'pdf'
 
   if (['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(ext)) {
-    return 'image';
+    return 'image'
   }
 
   if (['doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx'].includes(ext)) {
-    return 'office';
+    return 'office'
   }
 
-  return 'unsupported';
+  return 'unsupported'
 }
 
 // ============================================================================
@@ -248,38 +265,36 @@ export function getFileCategory(extension: string): FileCategory {
  * Extrae la extensión de un archivo desde su URL o nombre
  */
 export function getFileExtension(fileNameOrUrl: string): string {
-  if (!fileNameOrUrl) return '';
+  if (!fileNameOrUrl) return ''
 
-  const urlWithoutParams = fileNameOrUrl.split('?')[0];
+  const urlWithoutParams = fileNameOrUrl.split('?')[0]
 
-  const parts = urlWithoutParams.split('.');
+  const parts = urlWithoutParams.split('.')
 
-  if (parts.length === 1) return 'pdf';
+  if (parts.length === 1) return 'pdf'
 
-  return parts.pop()?.toLowerCase() || '';
+  return parts.pop()?.toLowerCase() || ''
 }
 
 /**
  * Formatea un nombre de archivo para display
  */
 export function formatFileName(fileName: string): string {
-  const nameWithoutExt = fileName.replace(/\.[^/.]+$/, '');
+  const nameWithoutExt = fileName.replace(/\.[^/.]+$/, '')
 
-  return nameWithoutExt
-    .replace(/[-_]/g, ' ')
-    .trim();
+  return nameWithoutExt.replace(/[-_]/g, ' ').trim()
 }
 
 /**
  * Genera una URL amigable para un curso
  */
 export function getCourseUrl(carrera: Carrera, codigo: string): string {
-  return `/${carrera}/${codigo}`;
+  return `/${carrera}/${codigo}`
 }
 
 /**
  * Genera una URL de breadcrumb
  */
 export function getBreadcrumbUrl(carrera: Carrera): string {
-  return `/${carrera}`;
+  return `/${carrera}`
 }

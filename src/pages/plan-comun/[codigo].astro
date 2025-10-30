@@ -4,18 +4,18 @@
  * Usa el componente reutilizable CareerCoursePage
  */
 
-import CareerCoursePage from "@/components/CareerCoursePage.astro";
-import planComun from "@/data/plan-comun/ramos.json";
+import CareerCoursePage from '@/components/CareerCoursePage.astro'
+import planComun from '@/data/plan-comun/ramos.json'
 
 export async function getStaticPaths() {
   return planComun.map(({ codigo, nombre }) => ({
     params: { codigo },
     props: { nombre },
-  }));
+  }))
 }
 
-const { codigo } = Astro.params;
-const { nombre } = Astro.props;
+const { codigo } = Astro.params
+const { nombre } = Astro.props
 ---
 
 <CareerCoursePage carrera="plan-comun" codigo={codigo} nombre={nombre} />

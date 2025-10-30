@@ -4,18 +4,18 @@
  * Usa el componente reutilizable CareerCoursePage
  */
 
-import CareerCoursePage from "@/components/CareerCoursePage.astro";
-import eit from "@/data/eit/ramos.json";
+import CareerCoursePage from '@/components/CareerCoursePage.astro'
+import eit from '@/data/eit/ramos.json'
 
 export async function getStaticPaths() {
   return eit.map(({ codigo, nombre }) => ({
     params: { codigo },
     props: { nombre },
-  }));
+  }))
 }
 
-const { codigo } = Astro.params;
-const { nombre } = Astro.props;
+const { codigo } = Astro.params
+const { nombre } = Astro.props
 ---
 
 <CareerCoursePage carrera="eit" codigo={codigo} nombre={nombre} />

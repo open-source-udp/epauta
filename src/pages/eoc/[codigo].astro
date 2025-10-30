@@ -4,18 +4,18 @@
  * Usa el componente reutilizable CareerCoursePage
  */
 
-import CareerCoursePage from "@/components/CareerCoursePage.astro";
-import eoc from "@/data/eoc/ramos.json";
+import CareerCoursePage from '@/components/CareerCoursePage.astro'
+import eoc from '@/data/eoc/ramos.json'
 
 export async function getStaticPaths() {
   return eoc.map(({ codigo, nombre }) => ({
     params: { codigo },
     props: { nombre },
-  }));
+  }))
 }
 
-const { codigo } = Astro.params;
-const { nombre } = Astro.props;
+const { codigo } = Astro.params
+const { nombre } = Astro.props
 ---
 
 <CareerCoursePage carrera="eoc" codigo={codigo} nombre={nombre} />

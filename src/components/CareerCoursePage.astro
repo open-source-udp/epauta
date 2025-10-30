@@ -4,64 +4,64 @@
  * Elimina la duplicación de código entre plan-comun, eit, eoc, eii
  */
 
-import { storage } from "@/lib/storage";
-import Layout from "@/layouts/Layout.astro";
-import ResourcesWithViewer from "@/components/ResourcesWithViewer";
-import ErrorMessage from "@/components/ui/ErrorMessage.astro";
-import EmptyState from "@/components/ui/EmptyState.astro";
-import ErrorBoundary from "@/components/ErrorBoundary";
-import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
-import type { Carrera } from "@/types";
-import { CARRERA_NAMES } from "@/types";
-import "@/styles/globals.css";
+import { storage } from '@/lib/storage'
+import Layout from '@/layouts/Layout.astro'
+import ResourcesWithViewer from '@/components/ResourcesWithViewer'
+import ErrorMessage from '@/components/ui/ErrorMessage.astro'
+import EmptyState from '@/components/ui/EmptyState.astro'
+import ErrorBoundary from '@/components/ErrorBoundary'
+import { MagnifyingGlassIcon } from '@radix-ui/react-icons'
+import type { Carrera } from '@/types'
+import { CARRERA_NAMES } from '@/types'
+import '@/styles/globals.css'
 
 interface Props {
-  carrera: Carrera;
-  codigo: string;
-  nombre: string;
+  carrera: Carrera
+  codigo: string
+  nombre: string
 }
 
-const { carrera, codigo, nombre } = Astro.props;
-const searchParam = Astro.url.searchParams.get('search') || '';
+const { carrera, codigo, nombre } = Astro.props
+const searchParam = Astro.url.searchParams.get('search') || ''
 
 // Obtener el nombre legible de la carrera
-const carreraName = CARRERA_NAMES[carrera];
+const carreraName = CARRERA_NAMES[carrera]
 
 // Listar archivos desde R2
-const { data, error } = await storage.from("epauta").list(`${carrera}/${codigo}`, {
+const { data, error } = await storage.from('epauta').list(`${carrera}/${codigo}`, {
   limit: 100,
   offset: 0,
-  sortBy: { column: "name", order: "asc" },
-});
+  sortBy: { column: 'name', order: 'asc' },
+})
 
 // Debug logging
 if (error) {
-  console.error(`Error al listar archivos de ${carrera}/${codigo}:`, error);
+  console.error(`Error al listar archivos de ${carrera}/${codigo}:`, error)
 }
-console.log(`Archivos encontrados en ${carrera}/${codigo}:`, data?.length || 0);
+console.log(`Archivos encontrados en ${carrera}/${codigo}:`, data?.length || 0)
 
 // Construir URLs públicas para los recursos
 const recursosBase = await Promise.all(
   data?.map(async (recurso) => {
     const { data: publicUrlData } = storage
-      .from("epauta")
-      .getPublicUrl(`${carrera}/${codigo}/${recurso.name}`);
+      .from('epauta')
+      .getPublicUrl(`${carrera}/${codigo}/${recurso.name}`)
 
     if (error) {
-      console.error("Error fetching public URL:", error);
-      return { ...recurso, publicUrl: '', codigo };
+      console.error('Error fetching public URL:', error)
+      return { ...recurso, publicUrl: '', codigo }
     }
 
-    return { ...recurso, publicUrl: publicUrlData?.publicUrl || '', codigo };
+    return { ...recurso, publicUrl: publicUrlData?.publicUrl || '', codigo }
   }) ?? []
-);
+)
 
 // Filtrar por término de búsqueda
 const recursos = recursosBase.filter((recurso) =>
   recurso.name.toLowerCase().includes(searchParam.toLowerCase())
-);
+)
 
-console.log(`Recursos después del filtro:`, recursos.length);
+console.log(`Recursos después del filtro:`, recursos.length)
 ---
 
 <Layout title={`${codigo} - ${nombre}`}>
@@ -95,40 +95,48 @@ console.log(`Recursos después del filtro:`, recursos.length);
   </header>
 
   <!-- Manejo de estados -->
-  {error && (
-    <ErrorMessage
-      title="Error al cargar los recursos"
-      message="No se pudieron obtener los archivos del servidor. Por favor, intenta más tarde."
-      showRetry={true}
-    />
-  )}
+  {
+    error && (
+      <ErrorMessage
+        title="Error al cargar los recursos"
+        message="No se pudieron obtener los archivos del servidor. Por favor, intenta más tarde."
+        showRetry={true}
+      />
+    )
+  }
 
-  {!error && recursos.length === 0 && !searchParam && (
-    <EmptyState
-      title="Sin recursos disponibles"
-      message={`El curso ${codigo} aún no tiene archivos disponibles.`}
-      icon="📚"
-    />
-  )}
+  {
+    !error && recursos.length === 0 && !searchParam && (
+      <EmptyState
+        title="Sin recursos disponibles"
+        message={`El curso ${codigo} aún no tiene archivos disponibles.`}
+        icon="📚"
+      />
+    )
+  }
 
-  {!error && recursos.length === 0 && searchParam && (
-    <EmptyState
-      title="Sin resultados"
-      message={`No se encontraron archivos que coincidan con "${searchParam}".`}
-      icon="🔍"
-    >
-      <a
-        href={`/${carrera}/${codigo}`}
-        class="inline-block mt-4 text-sm font-medium text-primary hover:underline"
+  {
+    !error && recursos.length === 0 && searchParam && (
+      <EmptyState
+        title="Sin resultados"
+        message={`No se encontraron archivos que coincidan con "${searchParam}".`}
+        icon="🔍"
       >
-        Ver todos los archivos
-      </a>
-    </EmptyState>
-  )}
+        <a
+          href={`/${carrera}/${codigo}`}
+          class="inline-block mt-4 text-sm font-medium text-primary hover:underline"
+        >
+          Ver todos los archivos
+        </a>
+      </EmptyState>
+    )
+  }
 
-  {!error && recursos.length > 0 && (
-    <ErrorBoundary client:only="react">
-      <ResourcesWithViewer recursos={recursos} client:visible />
-    </ErrorBoundary>
-  )}
+  {
+    !error && recursos.length > 0 && (
+      <ErrorBoundary client:only="react">
+        <ResourcesWithViewer recursos={recursos} client:visible />
+      </ErrorBoundary>
+    )
+  }
 </Layout>

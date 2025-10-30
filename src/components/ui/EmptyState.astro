@@ -5,10 +5,10 @@
  */
 
 interface Props {
-  title?: string;
-  message?: string;
-  icon?: string;
-  class?: string;
+  title?: string
+  message?: string
+  icon?: string
+  class?: string
 }
 
 const {
@@ -16,7 +16,7 @@ const {
   message = 'No se encontraron archivos para este curso.',
   icon = '📭',
   class: className = '',
-} = Astro.props;
+} = Astro.props
 ---
 
 <div class={`my-8 ${className}`}>

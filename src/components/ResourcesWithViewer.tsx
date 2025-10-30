@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import type { ResourcesWithViewerProps } from '@/types';
-import { FileViewer } from './FileViewer';
-import { MaterialCard } from './MaterialCard';
+import { useState } from 'react'
+import type { ResourcesWithViewerProps } from '@/types'
+import { FileViewer } from './FileViewer'
+import { MaterialCard } from './MaterialCard'
 
 // ============================================================================
 // Subcomponentes
@@ -15,20 +15,20 @@ const EmptyState = () => (
       </p>
     </div>
   </div>
-);
+)
 
 // ============================================================================
 // Componente Principal
 // ============================================================================
 
 export const ResourcesWithViewer = ({ recursos }: ResourcesWithViewerProps) => {
-  const [selectedUrl, setSelectedUrl] = useState<string | undefined>();
-  const [selectedFileName, setSelectedFileName] = useState<string | undefined>();
+  const [selectedUrl, setSelectedUrl] = useState<string | undefined>()
+  const [selectedFileName, setSelectedFileName] = useState<string | undefined>()
 
   const handleResourceClick = (url: string, fileName: string) => {
-    setSelectedUrl(url);
-    setSelectedFileName(fileName);
-  };
+    setSelectedUrl(url)
+    setSelectedFileName(fileName)
+  }
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 mt-8 gap-4 min-h-[80vh]">
@@ -65,7 +65,7 @@ export const ResourcesWithViewer = ({ recursos }: ResourcesWithViewerProps) => {
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ResourcesWithViewer;
+export default ResourcesWithViewer
