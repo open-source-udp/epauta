@@ -4,6 +4,7 @@ interface Props {
   children: ReactNode
   fallback?: ReactNode
   onError?: (error: Error, errorInfo: React.ErrorInfo) => void
+  resetKeys?: Array<string | number>
 }
 
 interface State {
@@ -39,6 +40,18 @@ export class ErrorBoundary extends Component<Props, State> {
     // Callback opcional para tracking/logging externo
     if (this.props.onError) {
       this.props.onError(error, errorInfo)
+    }
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    // Reset error state if resetKeys changed
+    if (
+      this.state.hasError &&
+      this.props.resetKeys &&
+      prevProps.resetKeys &&
+      this.props.resetKeys.some((key, i) => key !== prevProps.resetKeys?.[i])
+    ) {
+      this.setState({ hasError: false, error: undefined })
     }
   }
 
