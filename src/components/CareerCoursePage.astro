@@ -1,0 +1,134 @@
+---
+/**
+ * Componente reutilizable para páginas de cursos por carrera
+ * Elimina la duplicación de código entre plan-comun, eit, eoc, eii
+ */
+
+import { storage } from "@/lib/storage";
+import Layout from "@/layouts/Layout.astro";
+import ResourcesWithViewer from "@/components/ResourcesWithViewer";
+import ErrorMessage from "@/components/ui/ErrorMessage.astro";
+import EmptyState from "@/components/ui/EmptyState.astro";
+import ErrorBoundary from "@/components/ErrorBoundary";
+import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
+import type { Carrera } from "@/types";
+import { CARRERA_NAMES } from "@/types";
+import "@/styles/globals.css";
+
+interface Props {
+  carrera: Carrera;
+  codigo: string;
+  nombre: string;
+}
+
+const { carrera, codigo, nombre } = Astro.props;
+const searchParam = Astro.url.searchParams.get('search') || '';
+
+// Obtener el nombre legible de la carrera
+const carreraName = CARRERA_NAMES[carrera];
+
+// Listar archivos desde R2
+const { data, error } = await storage.from("epauta").list(`${carrera}/${codigo}`, {
+  limit: 100,
+  offset: 0,
+  sortBy: { column: "name", order: "asc" },
+});
+
+// Debug logging
+if (error) {
+  console.error(`Error al listar archivos de ${carrera}/${codigo}:`, error);
+}
+console.log(`Archivos encontrados en ${carrera}/${codigo}:`, data?.length || 0);
+
+// Construir URLs públicas para los recursos
+const recursosBase = await Promise.all(
+  data?.map(async (recurso) => {
+    const { data: publicUrlData } = storage
+      .from("epauta")
+      .getPublicUrl(`${carrera}/${codigo}/${recurso.name}`);
+
+    if (error) {
+      console.error("Error fetching public URL:", error);
+      return { ...recurso, publicUrl: '', codigo };
+    }
+
+    return { ...recurso, publicUrl: publicUrlData?.publicUrl || '', codigo };
+  }) ?? []
+);
+
+// Filtrar por término de búsqueda
+const recursos = recursosBase.filter((recurso) =>
+  recurso.name.toLowerCase().includes(searchParam.toLowerCase())
+);
+
+console.log(`Recursos después del filtro:`, recursos.length);
+---
+
+<Layout title={`${codigo} - ${nombre}`}>
+  <!-- Header con breadcrumb y búsqueda -->
+  <header class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 my-4">
+    <h1 class="text-2xl md:text-3xl font-bold text-gray-800">
+      <a href="/" class="hover:text-primary transition-colors">ePAUTA</a>
+      <span class="text-gray-400 mx-2">/</span>
+      <a href={`/${carrera}`} class="hover:text-primary transition-colors">{carreraName}</a>
+      <span class="text-gray-400 mx-2">/</span>
+      <span class="text-primary">{codigo}</span>
+    </h1>
+
+    <form method="get" class="flex gap-2 w-full md:w-auto">
+      <input
+        type="text"
+        name="search"
+        placeholder="Buscar archivos..."
+        value={searchParam}
+        class="flex-1 md:flex-initial px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent min-w-[200px]"
+        aria-label="Buscar archivos"
+      />
+      <button
+        type="submit"
+        class="px-4 py-2 bg-white text-primary border border-gray-300 rounded-md hover:bg-primary hover:text-white hover:border-primary transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+        aria-label="Buscar"
+      >
+        <MagnifyingGlassIcon className="w-5 h-5" />
+      </button>
+    </form>
+  </header>
+
+  <!-- Manejo de estados -->
+  {error && (
+    <ErrorMessage
+      title="Error al cargar los recursos"
+      message="No se pudieron obtener los archivos del servidor. Por favor, intenta más tarde."
+      showRetry={true}
+    />
+  )}
+
+  {!error && recursos.length === 0 && !searchParam && (
+    <EmptyState
+      title="Sin recursos disponibles"
+      message={`El curso ${codigo} aún no tiene archivos disponibles.`}
+      icon="📚"
+    />
+  )}
+
+  {!error && recursos.length === 0 && searchParam && (
+    <EmptyState
+      title="Sin resultados"
+      message={`No se encontraron archivos que coincidan con "${searchParam}".`}
+      icon="🔍"
+    >
+      <a
+        href={`/${carrera}/${codigo}`}
+        class="inline-block mt-4 text-sm font-medium text-primary hover:underline"
+      >
+        Ver todos los archivos
+      </a>
+    </EmptyState>
+  )}
+
+  {!error && recursos.length > 0 && (
+    <ErrorBoundary client:only="react">
+      <ResourcesWithViewer recursos={recursos} client:visible />
+    </ErrorBoundary>
+  )}
+</Layout>
