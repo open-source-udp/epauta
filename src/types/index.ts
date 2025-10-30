@@ -51,9 +51,9 @@ export type Carrera = 'plan-comun' | 'eit' | 'eoc' | 'eii'
  */
 export const CARRERA_NAMES: Record<Carrera, string> = {
   'plan-comun': 'Plan Común',
-  eit: 'Ingeniería Civil en Informática y Telecomunicaciones',
-  eoc: 'Ingeniería Civil en Obras Civiles',
-  eii: 'Ingeniería Civil Industrial',
+  eit: 'Informática y Telecomunicaciones',
+  eoc: 'Obras Civiles',
+  eii: 'Industrial',
 } as const
 
 /**
